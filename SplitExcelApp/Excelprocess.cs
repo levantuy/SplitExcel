@@ -56,6 +56,12 @@ namespace SplitExcelApp
 
         private void btnSplitExcel_ItemClick(object sender, ItemClickEventArgs e)
         {
+            if(barEditQuarter.EditValue == null || barEditYear.EditValue == null)
+            {
+                MessageBox.Show("Bạn phải chọn điều kiện năm, quý muốn xử lý!", "Thông báo lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
             var firstDateOfQuarter = DateOfQuarter(true);
             var lastDateOfQuarter = DateOfQuarter(false);
 
@@ -128,6 +134,7 @@ namespace SplitExcelApp
             IWorkbook workbookNew = spreadsheetControl.Document;
             var sheetErrors = workbookNew.Worksheets.Add("Errors");
             var sheetTotal = workbookNew.Worksheets["TỔNG"];
+            sheetTotal.Cells["A1"].Value = "DOANH THU QUÝ " + barEditQuarter.EditValue.ToString() + "/" + Convert.ToDateTime(barEditYear.EditValue).ToString("yyyy");
             workbook.Worksheets[sheetErrors.Name].CopyFrom(workbook.Worksheets["tempSheet"]);
             var errorCount = 5;
             foreach(DataRow row in dataErrors.Rows)
@@ -136,11 +143,11 @@ namespace SplitExcelApp
                 sheetErrors.Rows.Insert(errorCount);
                 sheetErrors.Rows[errorCount].CopyFrom(sheetErrors.Rows[errorCount + 1], PasteSpecial.All);
                 sheetErrors.Rows[errorCount][1].Value = (errorCount - 5).ToString();
-                sheetErrors.Rows[errorCount][2].Value = row[0].ToString();
-                sheetErrors.Rows[errorCount][3].Value = row[1].ToString();
-                sheetErrors.Rows[errorCount][4].Value = row[2].ToString();
-                sheetErrors.Rows[errorCount][5].Value = row[3].ToString();
-                sheetErrors.Rows[errorCount][6].Value = row[4].ToString();
+                sheetErrors.Rows[errorCount][2].Value = row["Name"].ToString();
+                sheetErrors.Rows[errorCount][3].Value = row["HP"].ToString();
+                sheetErrors.Rows[errorCount][4].Value = row["PaymentDate"].ToString();
+                sheetErrors.Rows[errorCount][5].Value = row["PaymentType"].ToString();
+                sheetErrors.Rows[errorCount][6].Value = row["HPQ2"].ToString();
                 sheetErrors.Cells["Q" + (errorCount + 1).ToString()].Value = row[7].ToString();
                 sheetErrors.Cells["R" + (errorCount + 1).ToString()].Value = row["ErrorMessage"].ToString();
             }
@@ -152,7 +159,7 @@ namespace SplitExcelApp
             // get sheets
             var distinctRows = (from DataRow dRow in dataTable.Rows
                                 select new { ClassName = dRow["Class"].ToString(), ClassDay = dRow["Day"].ToString() }).Distinct().OrderBy(x => x.ClassName);
-          
+            
             foreach (var info in distinctRows)
             {
                 var sheet = workbookNew.Worksheets.Add();                
@@ -171,16 +178,20 @@ namespace SplitExcelApp
                     if (row["Class"].ToString() == info.ClassName && row["Day"].ToString() == info.ClassDay)
                     {
                         try
-                        {
+                        {                           
                             count++;
                             sheet.Rows.Insert(count);
                             sheet.Rows[count].CopyFrom(sheet.Rows[count + 1], PasteSpecial.All);
                             sheet.Rows[count][1].Value = (count - 5).ToString();
-                            sheet.Rows[count][2].Value = row[0].ToString();
-                            sheet.Rows[count][3].Value = row[1].ToString().Length > 0 ? Convert.ToDouble(row[1]) : 0;
-                            sheet.Rows[count][4].Value = row[2].ToString().Length > 6 ? Convert.ToDateTime(row[2]).ToString("dd/MM/yyyy") : row[2].ToString();
-                            sheet.Rows[count][5].Value = row[3].ToString();
-                            sheet.Rows[count][6].Value = row[4].ToString().Length > 0 ? Convert.ToDouble(row[4]) : 0;
+                            sheet.Rows[count][2].Value = row["Name"].ToString();
+                            sheet.Rows[count][3].Value = row["HP"].ToString().Length > 0 ? Convert.ToDouble(row["HP"]) : 0;
+                            sheet.Rows[count][4].Value = row["PaymentDate"].ToString().Length > 6 ? Convert.ToDateTime(row[2]).ToString("MM/dd/yyyy") : row["PaymentDate"].ToString();
+                            sheet.Rows[count][5].Value = row["PaymentType"].ToString();
+                            //sheet.Rows[count][6].Value = row["HPQ2"].ToString().Length > 0 ? Convert.ToDouble(row["HPQ2"]) : 0;
+                            var strCount = (count + 1).ToString();
+                            sheet.Rows[count][6].SetValueFromText("=D" + strCount + "-(H" + strCount + "+L" + strCount + "+M" + strCount
+                                + "+N" + strCount + "+O" + strCount + ")+(J" + strCount + "+K" + strCount + ")");
+                            //= D9 - (H9 + L9 + M9 + N9 + O9) + (J9 + K9)
                             sheet.Cells["Q" + (count + 1).ToString()].Value = row[7].ToString();
                         }
                         catch(Exception ex)
@@ -191,11 +202,11 @@ namespace SplitExcelApp
                             sheetErrors.Rows.Insert(errorCount);
                             sheetErrors.Rows[errorCount].CopyFrom(sheetErrors.Rows[errorCount + 1], PasteSpecial.All);
                             sheetErrors.Rows[errorCount][1].Value = (errorCount - 5).ToString();
-                            sheetErrors.Rows[errorCount][2].Value = row[0].ToString();
-                            sheetErrors.Rows[errorCount][3].Value = row[1].ToString();
-                            sheetErrors.Rows[errorCount][4].Value = row[2].ToString();
-                            sheetErrors.Rows[errorCount][5].Value = row[3].ToString();
-                            sheetErrors.Rows[errorCount][6].Value = row[4].ToString();
+                            sheetErrors.Rows[errorCount][2].Value = row["Name"].ToString();
+                            sheetErrors.Rows[errorCount][3].Value = row["HP"].ToString();
+                            sheetErrors.Rows[errorCount][4].Value = row["PaymentDate"].ToString();
+                            sheetErrors.Rows[errorCount][5].Value = row["PaymentType"].ToString();
+                            sheetErrors.Rows[errorCount][6].Value = row["HPQ2"].ToString();
                             sheetErrors.Cells["Q" + (errorCount + 1).ToString()].Value = row[7].ToString();
                             sheetErrors.Cells["R" + (errorCount + 1).ToString()].Value = ex.Message;
                         }                        
@@ -204,7 +215,7 @@ namespace SplitExcelApp
 
                 // write sheet total      
                 var usedTotal = sheetTotal.GetUsedRange();
-                var rowIndexTotal = 0;
+                var rowIndexTotal = 0;                
                 for (int rowIndex = 4; rowIndex <= usedTotal.BottomRowIndex; rowIndex++)
                 {
                     if (sheetTotal.Cells["B" + rowIndex.ToString()].Value.ToString().ToUpper() == info.ClassDay.ToUpper())
@@ -218,6 +229,7 @@ namespace SplitExcelApp
                     var rowIndex = count + 8;
                     sheetTotal.Rows.Insert(rowIndexTotal);
                     sheetTotal.Rows[rowIndexTotal].CopyFrom(sheetTotal.Rows[rowIndexTotal - 1], PasteSpecial.All);
+                    
                     sheetTotal.Cells["C" + rowIndexTotal.ToString()].Value = info.ClassName.ToUpper();
                     sheetTotal.Cells["D" + rowIndexTotal.ToString()].SetValueFromText("='" + sheet.Name + "'!$D$" + rowIndex.ToString());
                     sheetTotal.Cells["E" + rowIndexTotal.ToString()].SetValueFromText("='" + sheet.Name + "'!$E$" + rowIndex.ToString());
@@ -229,19 +241,12 @@ namespace SplitExcelApp
                     sheetTotal.Cells["K" + rowIndexTotal.ToString()].SetValueFromText("='" + sheet.Name + "'!$L$" + rowIndex.ToString());
                     sheetTotal.Cells["L" + rowIndexTotal.ToString()].SetValueFromText("='" + sheet.Name + "'!$M$" + rowIndex.ToString());
                     sheetTotal.Cells["M" + rowIndexTotal.ToString()].SetValueFromText("='" + sheet.Name + "'!$N$" + rowIndex.ToString());
+                    if (sheetTotal.Cells["B" + (rowIndexTotal + 1).ToString()].Value == sheetTotal.Cells["B" + rowIndexTotal.ToString()].Value)
+                        sheetTotal.MergeCells(sheetTotal.Range["B" + (rowIndexTotal + 1).ToString() + ":" + "B" + rowIndexTotal.ToString()]);                    
                 }
             }
             workbookNew.Worksheets.RemoveAt(0);
-            // remove line have class value is null
-            var usedTotal1 = sheetTotal.GetUsedRange();
-            for (int rowIndex = 4; rowIndex <= 200; rowIndex++)
-            {
-                if (string.IsNullOrEmpty(sheetTotal.Cells["C" + rowIndex.ToString()].Value.ToString()) &&
-                    sheetTotal.Cells["A" + rowIndex.ToString()].Value.ToString().Trim().ToUpper() != "TỔNG")
-                {
-                    sheetTotal.Rows.Remove(rowIndex);
-                }
-            }
+                     
             SaveFileDialog saveFileDialog1 = new SaveFileDialog();
             saveFileDialog1.InitialDirectory = @"D:\";  
             saveFileDialog1.Title = "Khai báo file lưu kết quả";
