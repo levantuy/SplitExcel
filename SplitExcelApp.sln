@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.28010.2046
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SplitExcelApp", "SplitExcelApp\SplitExcelApp.csproj", "{5050F330-B755-4947-B939-A421A29C5119}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "SplitExcelSetup", "SplitExcelSetup\SplitExcelSetup.vdproj", "{26BC2577-782B-4DC3-A7C0-9F0A7B9096E1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,8 @@ Global
 		{5050F330-B755-4947-B939-A421A29C5119}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5050F330-B755-4947-B939-A421A29C5119}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5050F330-B755-4947-B939-A421A29C5119}.Release|Any CPU.Build.0 = Release|Any CPU
+		{26BC2577-782B-4DC3-A7C0-9F0A7B9096E1}.Debug|Any CPU.ActiveCfg = Debug
+		{26BC2577-782B-4DC3-A7C0-9F0A7B9096E1}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
