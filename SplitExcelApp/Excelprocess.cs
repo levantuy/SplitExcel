@@ -124,9 +124,10 @@ namespace SplitExcelApp
                 }
             }
 
-            spreadsheetControl.Document.LoadDocument(@"templates\temp.xlsx");
+            spreadsheetControl.Document.LoadDocument(@"templates\temp.xlsx");            
             IWorkbook workbookNew = spreadsheetControl.Document;
             var sheetErrors = workbookNew.Worksheets.Add("Errors");
+            var sheetTotal = workbookNew.Worksheets["TỔNG"];
             workbook.Worksheets[sheetErrors.Name].CopyFrom(workbook.Worksheets["tempSheet"]);
             var errorCount = 5;
             foreach(DataRow row in dataErrors.Rows)
@@ -200,9 +201,61 @@ namespace SplitExcelApp
                         }                        
                     }
                 }
-                //sheet.Rows.Remove(count + 1);
+
+                // write sheet total      
+                var usedTotal = sheetTotal.GetUsedRange();
+                var rowIndexTotal = 0;
+                for (int rowIndex = 4; rowIndex <= usedTotal.BottomRowIndex; rowIndex++)
+                {
+                    if (sheetTotal.Cells["B" + rowIndex.ToString()].Value.ToString().ToUpper() == info.ClassDay.ToUpper())
+                    {
+                        rowIndexTotal = rowIndex;
+                        break;
+                    }                        
+                }
+                if(rowIndexTotal > 0)
+                {
+                    var rowIndex = count + 8;
+                    sheetTotal.Rows.Insert(rowIndexTotal);
+                    sheetTotal.Rows[rowIndexTotal].CopyFrom(sheetTotal.Rows[rowIndexTotal - 1], PasteSpecial.All);
+                    sheetTotal.Cells["C" + rowIndexTotal.ToString()].Value = info.ClassName.ToUpper();
+                    sheetTotal.Cells["D" + rowIndexTotal.ToString()].SetValueFromText("='" + sheet.Name + "'!$D$" + rowIndex.ToString());
+                    sheetTotal.Cells["E" + rowIndexTotal.ToString()].SetValueFromText("='" + sheet.Name + "'!$E$" + rowIndex.ToString());
+                    sheetTotal.Cells["F" + rowIndexTotal.ToString()].SetValueFromText("='" + sheet.Name + "'!$G$" + rowIndex.ToString());
+                    sheetTotal.Cells["G" + rowIndexTotal.ToString()].SetValueFromText("='" + sheet.Name + "'!$H$" + rowIndex.ToString());
+                    sheetTotal.Cells["H" + rowIndexTotal.ToString()].SetValueFromText("='" + sheet.Name + "'!$I$" + rowIndex.ToString());
+                    sheetTotal.Cells["I" + rowIndexTotal.ToString()].SetValueFromText("='" + sheet.Name + "'!$J$" + rowIndex.ToString());
+                    sheetTotal.Cells["J" + rowIndexTotal.ToString()].SetValueFromText("='" + sheet.Name + "'!$K$" + rowIndex.ToString());
+                    sheetTotal.Cells["K" + rowIndexTotal.ToString()].SetValueFromText("='" + sheet.Name + "'!$L$" + rowIndex.ToString());
+                    sheetTotal.Cells["L" + rowIndexTotal.ToString()].SetValueFromText("='" + sheet.Name + "'!$M$" + rowIndex.ToString());
+                    sheetTotal.Cells["M" + rowIndexTotal.ToString()].SetValueFromText("='" + sheet.Name + "'!$N$" + rowIndex.ToString());
+                }
             }
             workbookNew.Worksheets.RemoveAt(0);
+            // remove line have class value is null
+            var usedTotal1 = sheetTotal.GetUsedRange();
+            for (int rowIndex = 4; rowIndex <= 200; rowIndex++)
+            {
+                if (string.IsNullOrEmpty(sheetTotal.Cells["C" + rowIndex.ToString()].Value.ToString()) &&
+                    sheetTotal.Cells["A" + rowIndex.ToString()].Value.ToString().Trim().ToUpper() != "TỔNG")
+                {
+                    sheetTotal.Rows.Remove(rowIndex);
+                }
+            }
+            SaveFileDialog saveFileDialog1 = new SaveFileDialog();
+            saveFileDialog1.InitialDirectory = @"D:\";  
+            saveFileDialog1.Title = "Khai báo file lưu kết quả";
+            //saveFileDialog1.CheckFileExists = true;
+            //saveFileDialog1.CheckPathExists = true;
+            saveFileDialog1.DefaultExt = "xlsx";
+            //saveFileDialog1.Filter = "Text files (*.xlsx)|*.xls|All files (*.*)|*.*";
+            saveFileDialog1.FilterIndex = 2;
+            saveFileDialog1.RestoreDirectory = true;
+            if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                workbookNew.SaveDocument(saveFileDialog1.FileName);
+                spreadsheetControl.Document.LoadDocument(saveFileDialog1.FileName);
+            }            
         }
 
         public string ConvertToEnglish(string vietnamese)
