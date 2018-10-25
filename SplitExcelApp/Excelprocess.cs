@@ -81,6 +81,8 @@ namespace SplitExcelApp
                 dataTable.Columns.Add("Day");
                 dataTable.Columns.Add("Note");
                 dataTable.Columns.Add("IsError");
+                dataTable.Columns.Add("DebitQ1");
+                dataTable.Columns.Add("DebitQ2");
 
                 var dataErrors = new DataTable("DataError");
                 dataErrors.Columns.Add("Name");
@@ -115,8 +117,10 @@ namespace SplitExcelApp
                             dataRow["HP"] = hp;
                             dataRow["Class"] = worksheet.Cells["G" + i.ToString()].Value;
                             dataRow["Day"] = worksheet.Cells["H" + i.ToString()].Value;
-                            dataRow["Note"] = worksheet.Cells["C" + i.ToString()].Value;
+                            dataRow["Note"] = worksheet.Cells["Q" + i.ToString()].Value.ToString() + " " + worksheet.Cells["Q" + i.ToString()].Value.ToString() + " " + worksheet.Cells["Q" + i.ToString()].Value.ToString();
                             dataRow["IsError"] = false;
+                            dataRow["DebitQ1"] = worksheet.Cells["I" + i.ToString()].Value;
+                            dataRow["DebitQ2"] = worksheet.Cells["J" + i.ToString()].Value;                            
                             dataTable.Rows.Add(dataRow);
                         }
                         catch
@@ -129,8 +133,10 @@ namespace SplitExcelApp
                             dataRow["HP"] = worksheet.Cells["M" + i.ToString()].Value;
                             dataRow["Class"] = worksheet.Cells["G" + i.ToString()].Value;
                             dataRow["Day"] = worksheet.Cells["H" + i.ToString()].Value;
-                            dataRow["Note"] = worksheet.Cells["C" + i.ToString()].Value;
+                            dataRow["Note"] = worksheet.Cells["Q" + i.ToString()].Value.ToString() + " " + worksheet.Cells["Q" + i.ToString()].Value.ToString() + " " + worksheet.Cells["Q" + i.ToString()].Value.ToString();
                             dataRow["IsError"] = true;
+                            dataRow["DebitQ1"] = worksheet.Cells["I" + i.ToString()].Value;
+                            dataRow["DebitQ2"] = worksheet.Cells["J" + i.ToString()].Value;
                             dataTable.Rows.Add(dataRow);
                         }
                     }
@@ -193,14 +199,16 @@ namespace SplitExcelApp
                             sheet.Rows[count].CopyFrom(sheet.Rows[count + 1], PasteSpecial.All);
                             sheet.Rows[count][1].Value = (count - 5).ToString();
                             sheet.Rows[count][2].Value = row["Name"].ToString();
-                            sheet.Rows[count][3].SetValue(row["HP"].ToString());
+                            sheet.Rows[count][3].SetValue(ConvertToNumber(row["HP"]));
                             sheet.Rows[count][4].Value = ConvertDateToString(row["PaymentDate"]);
                             sheet.Rows[count][5].Value = row["PaymentType"].ToString();
                             //sheet.Rows[count][6].Value = row["HPQ2"].ToString().Length > 0 ? Convert.ToDouble(row["HPQ2"]) : 0;
                             var strCount = (count + 1).ToString();
                             sheet.Rows[count][6].SetValueFromText("=D" + strCount + "-(H" + strCount + "+L" + strCount + "+M" + strCount
                                 + "+N" + strCount + "+O" + strCount + ")+(J" + strCount + "+K" + strCount + ")");
-                            sheet.Cells["Q" + (count + 1).ToString()].Value = row[7].ToString();
+                            sheet.Cells["P" + (count + 1).ToString()].Value = row[7].ToString();
+                            sheet.Rows[count]["H"].SetValue(ConvertToNumber(row["DebitQ1"]));
+                            sheet.Rows[count]["J"].SetValue(ConvertToNumber(row["DebitQ2"]));
                             if (Convert.ToBoolean(row["IsError"]))
                             {
                                 Range range = sheet.Rows[count].GetRangeWithAbsoluteReference();
@@ -211,9 +219,11 @@ namespace SplitExcelApp
                             }
                         }
                     }
-                    // if counting less 30 than rows
-                    while(count < 30)
-                    {
+
+                    Application.DoEvents();
+                    // if counting less paramerter_row_total than rows                    
+                    while (count < (Convert.ToInt32(barEditRows.EditValue == null ? 30 : barEditRows.EditValue) + 5))
+                    {                        
                         count++;
                         sheet.Rows.Insert(count);
                         sheet.Rows[count].CopyFrom(sheet.Rows[count + 1], PasteSpecial.All);
@@ -263,7 +273,7 @@ namespace SplitExcelApp
                 }
                 workbookNew.Worksheets.RemoveAt(0);
 
-                SaveFileDialog saveFileDialog1 = new SaveFileDialog();
+                SaveFileDialog saveFileDialog1 = new SaveFileDialog();                
                 saveFileDialog1.InitialDirectory = @"D:\";
                 saveFileDialog1.Title = "Khai báo file lưu kết quả";
                 //saveFileDialog1.CheckFileExists = true;
@@ -352,6 +362,20 @@ namespace SplitExcelApp
         {
             Match m = Regex.Match(wsName, @"[\[/\?\]\*]");
             return (m.Success || (string.IsNullOrEmpty(wsName)) || (wsName.Length > 31)) ? false : true;
+        }
+
+        public object ConvertToNumber(object numberIn)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(numberIn.ToString().Trim()))
+                    return Convert.ToDouble(0);
+                return Convert.ToDouble(numberIn);
+            }
+            catch
+            {
+                return numberIn.ToString();
+            }
         }
     }
 }

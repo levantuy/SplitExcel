@@ -744,6 +744,9 @@
             this.spreadsheetCommandBarCheckItem41 = new DevExpress.XtraSpreadsheet.UI.SpreadsheetCommandBarCheckItem();
             this.spreadsheetCommandBarButtonItem189 = new DevExpress.XtraSpreadsheet.UI.SpreadsheetCommandBarButtonItem();
             this.spreadsheetCommandBarButtonItem190 = new DevExpress.XtraSpreadsheet.UI.SpreadsheetCommandBarButtonItem();
+            this.ribbonPageGroup2 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
+            this.barEditRows = new DevExpress.XtraBars.BarEditItem();
+            this.repositoryItemTextEdit2 = new DevExpress.XtraEditors.Repository.RepositoryItemTextEdit();
             ((System.ComponentModel.ISupportInitialize)(this.commandBarGalleryDropDown21)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ribbonControl)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.appMenu)).BeginInit();
@@ -789,6 +792,7 @@
             this.formulaBarNameBoxSplitContainerControl.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.spreadsheetNameBoxControl.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.spreadsheetBarController1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemTextEdit2)).BeginInit();
             this.SuspendLayout();
             // 
             // stylesRibbonPageGroup1
@@ -1347,10 +1351,11 @@
             this.spreadsheetCommandBarButtonItem208,
             this.btnSplitExcel,
             this.barEditYear,
-            this.barEditQuarter});
+            this.barEditQuarter,
+            this.barEditRows});
             this.ribbonControl.LargeImages = this.ribbonImageCollectionLarge;
             this.ribbonControl.Location = new System.Drawing.Point(0, 0);
-            this.ribbonControl.MaxItemId = 409;
+            this.ribbonControl.MaxItemId = 411;
             this.ribbonControl.Name = "ribbonControl";
             this.ribbonControl.PageCategories.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageCategory[] {
             this.pivotTableToolsRibbonPageCategory1,
@@ -1377,9 +1382,10 @@
             this.repositoryItemSpreadsheetFontSizeEdit1,
             this.repositoryItemPopupGalleryEdit1,
             this.repositoryItemDateEdit1,
-            this.repositoryItemLookUpEdit1});
+            this.repositoryItemLookUpEdit1,
+            this.repositoryItemTextEdit2});
             this.ribbonControl.RibbonStyle = DevExpress.XtraBars.Ribbon.RibbonControlStyle.Office2010;
-            this.ribbonControl.Size = new System.Drawing.Size(1100, 143);
+            this.ribbonControl.Size = new System.Drawing.Size(1338, 143);
             this.ribbonControl.StatusBar = this.ribbonStatusBar;
             // 
             // appMenu
@@ -3607,7 +3613,7 @@
             this.spreadsheetControl.Name = "spreadsheetControl";
             this.spreadsheetControl.Options.Import.Csv.Encoding = ((System.Text.Encoding)(resources.GetObject("spreadsheetControl.Options.Import.Csv.Encoding")));
             this.spreadsheetControl.Options.Import.Txt.Encoding = ((System.Text.Encoding)(resources.GetObject("spreadsheetControl.Options.Import.Txt.Encoding")));
-            this.spreadsheetControl.Size = new System.Drawing.Size(1100, 497);
+            this.spreadsheetControl.Size = new System.Drawing.Size(1338, 497);
             this.spreadsheetControl.TabIndex = 1;
             this.spreadsheetControl.Text = "spreadsheetControl1";
             // 
@@ -5183,7 +5189,8 @@
             this.fileRibbonPage1.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] {
             this.commonRibbonPageGroup1,
             this.infoRibbonPageGroup1,
-            this.ribbonPageGroup1});
+            this.ribbonPageGroup1,
+            this.ribbonPageGroup2});
             this.fileRibbonPage1.Name = "fileRibbonPage1";
             // 
             // commonRibbonPageGroup1
@@ -5515,7 +5522,7 @@
             this.ribbonStatusBar.Location = new System.Drawing.Point(0, 669);
             this.ribbonStatusBar.Name = "ribbonStatusBar";
             this.ribbonStatusBar.Ribbon = this.ribbonControl;
-            this.ribbonStatusBar.Size = new System.Drawing.Size(1100, 31);
+            this.ribbonStatusBar.Size = new System.Drawing.Size(1338, 31);
             // 
             // spreadsheetFormulaBarPanel
             // 
@@ -5525,7 +5532,7 @@
             this.spreadsheetFormulaBarPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.spreadsheetFormulaBarPanel.Location = new System.Drawing.Point(0, 143);
             this.spreadsheetFormulaBarPanel.Name = "spreadsheetFormulaBarPanel";
-            this.spreadsheetFormulaBarPanel.Size = new System.Drawing.Size(1100, 526);
+            this.spreadsheetFormulaBarPanel.Size = new System.Drawing.Size(1338, 526);
             this.spreadsheetFormulaBarPanel.TabIndex = 3;
             // 
             // splitterControl
@@ -5534,7 +5541,7 @@
             this.splitterControl.Location = new System.Drawing.Point(0, 24);
             this.splitterControl.MinSize = 20;
             this.splitterControl.Name = "splitterControl";
-            this.splitterControl.Size = new System.Drawing.Size(1100, 5);
+            this.splitterControl.Size = new System.Drawing.Size(1338, 5);
             this.splitterControl.TabIndex = 2;
             this.splitterControl.TabStop = false;
             // 
@@ -5546,7 +5553,7 @@
             this.formulaBarNameBoxSplitContainerControl.Name = "formulaBarNameBoxSplitContainerControl";
             this.formulaBarNameBoxSplitContainerControl.Panel1.Controls.Add(this.spreadsheetNameBoxControl);
             this.formulaBarNameBoxSplitContainerControl.Panel2.Controls.Add(this.spreadsheetFormulaBarControl1);
-            this.formulaBarNameBoxSplitContainerControl.Size = new System.Drawing.Size(1100, 24);
+            this.formulaBarNameBoxSplitContainerControl.Size = new System.Drawing.Size(1338, 24);
             this.formulaBarNameBoxSplitContainerControl.SplitterPosition = 145;
             this.formulaBarNameBoxSplitContainerControl.TabIndex = 3;
             // 
@@ -5569,7 +5576,7 @@
             this.spreadsheetFormulaBarControl1.Location = new System.Drawing.Point(0, 0);
             this.spreadsheetFormulaBarControl1.MinimumSize = new System.Drawing.Size(0, 20);
             this.spreadsheetFormulaBarControl1.Name = "spreadsheetFormulaBarControl1";
-            this.spreadsheetFormulaBarControl1.Size = new System.Drawing.Size(950, 24);
+            this.spreadsheetFormulaBarControl1.Size = new System.Drawing.Size(1188, 24);
             this.spreadsheetFormulaBarControl1.SpreadsheetControl = this.spreadsheetControl;
             this.spreadsheetFormulaBarControl1.TabIndex = 0;
             // 
@@ -5982,12 +5989,33 @@
             this.spreadsheetCommandBarButtonItem190.Id = -1;
             this.spreadsheetCommandBarButtonItem190.Name = "spreadsheetCommandBarButtonItem190";
             // 
+            // ribbonPageGroup2
+            // 
+            this.ribbonPageGroup2.ItemLinks.Add(this.barEditRows);
+            this.ribbonPageGroup2.Name = "ribbonPageGroup2";
+            this.ribbonPageGroup2.Text = "Tham số";
+            // 
+            // barEditRows
+            // 
+            this.barEditRows.Caption = "Số dòng: ";
+            this.barEditRows.Edit = this.repositoryItemTextEdit2;
+            this.barEditRows.Id = 410;
+            this.barEditRows.Name = "barEditRows";
+            // 
+            // repositoryItemTextEdit2
+            // 
+            this.repositoryItemTextEdit2.AllowNullInput = DevExpress.Utils.DefaultBoolean.False;
+            this.repositoryItemTextEdit2.AutoHeight = false;
+            this.repositoryItemTextEdit2.EditFormat.FormatType = DevExpress.Utils.FormatType.Numeric;
+            this.repositoryItemTextEdit2.Name = "repositoryItemTextEdit2";
+            this.repositoryItemTextEdit2.NullText = "30";
+            // 
             // Excelprocess
             // 
             this.AllowFormGlass = DevExpress.Utils.DefaultBoolean.False;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1100, 700);
+            this.ClientSize = new System.Drawing.Size(1338, 700);
             this.Controls.Add(this.spreadsheetFormulaBarPanel);
             this.Controls.Add(this.popupControlContainer1);
             this.Controls.Add(this.popupControlContainer2);
@@ -6045,6 +6073,7 @@
             this.formulaBarNameBoxSplitContainerControl.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.spreadsheetNameBoxControl.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.spreadsheetBarController1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.repositoryItemTextEdit2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -6538,5 +6567,8 @@
         private DevExpress.XtraEditors.Repository.RepositoryItemDateEdit repositoryItemDateEdit1;
         private DevExpress.XtraBars.BarEditItem barEditQuarter;
         private DevExpress.XtraEditors.Repository.RepositoryItemLookUpEdit repositoryItemLookUpEdit1;
+        private DevExpress.XtraBars.BarEditItem barEditRows;
+        private DevExpress.XtraEditors.Repository.RepositoryItemTextEdit repositoryItemTextEdit2;
+        private DevExpress.XtraBars.Ribbon.RibbonPageGroup ribbonPageGroup2;
     }
 }

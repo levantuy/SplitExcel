@@ -465,12 +465,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_5B4ACBADB03B4D1A810CBEA6DDDFBE77"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_65CE724316536B8206A9B5CD52433371"
         "OwnerKey" = "8:_90DA098AD928C2E65E3FC5F9A228CD8D"
         "MsmSig" = "8:_UNDEFINED"
@@ -1017,6 +1011,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_C87C3D1598044A33926CF16E656FDB8D"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_D07E75733C67477DA4AA95AD4C37C9D6"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -1204,19 +1204,13 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_9E20C9E083D673F87FE4963A77CAF1C4"
+        "OwnerKey" = "8:_840563CE69614847A06F6D43DBC9AD9E"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_D07E75733C67477DA4AA95AD4C37C9D6"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_840563CE69614847A06F6D43DBC9AD9E"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -1387,6 +1381,12 @@
         "OwnerKey" = "8:_75D3AE583A918FD414749E0422366894"
         "MsmSig" = "8:_UNDEFINED"
         }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_9E20C9E083D673F87FE4963A77CAF1C4"
+        "MsmSig" = "8:_UNDEFINED"
+        }
     }
     "Configurations"
     {
@@ -1437,6 +1437,22 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.6.1"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.6.1 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.6.1"
+                    }
+                }
+            }
         }
     }
     "Deployable"
@@ -1774,26 +1790,6 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_5B4ACBADB03B4D1A810CBEA6DDDFBE77"
-            {
-            "SourcePath" = "8:C:\\Users\\johnl\\Downloads\\planning.ico"
-            "TargetName" = "8:planning.ico"
-            "Tag" = "8:"
-            "Folder" = "8:_EF4708590CF04AB4A004ED487D93B950"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_65CE724316536B8206A9B5CD52433371"
@@ -2250,6 +2246,26 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C87C3D1598044A33926CF16E656FDB8D"
+            {
+            "SourcePath" = "8:..\\SplitExcelApp\\Images\\planning.ico"
+            "TargetName" = "8:planning.ico"
+            "Tag" = "8:"
+            "Folder" = "8:_EF4708590CF04AB4A004ED487D93B950"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_DAB44E747BF595C207C3B5327C007283"
             {
             "AssemblyRegister" = "3:1"
@@ -2472,15 +2488,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:SplitExcelSetup"
-        "ProductCode" = "8:{E6A4C6FA-C327-4A9C-897B-FF40F592B3F9}"
-        "PackageCode" = "8:{F1BA9A39-33B4-4278-A68B-AABB5A40205B}"
+        "ProductCode" = "8:{AA22E10A-4977-4DFF-AE33-7A45C6F9C2A3}"
+        "PackageCode" = "8:{90944A60-79A2-455F-8776-1780C08CA3C1}"
         "UpgradeCode" = "8:{DB540B0C-BD79-4FB7-8E33-C1E8416E1327}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
-        "RemovePreviousVersions" = "11:FALSE"
+        "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
-        "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.0.0"
+        "InstallAllUsers" = "11:TRUE"
+        "ProductVersion" = "8:1.3.3"
         "Manufacturer" = "8:Default Company Name"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
@@ -2604,7 +2620,7 @@
             "Target" = "8:_840563CE69614847A06F6D43DBC9AD9E"
             "Folder" = "8:_1F5F2DACC4EA4B53A20443EC5D8B08EB"
             "WorkingFolder" = "8:_3F14D035FE634800BC04F922622E58D1"
-            "Icon" = "8:_5B4ACBADB03B4D1A810CBEA6DDDFBE77"
+            "Icon" = "8:_C87C3D1598044A33926CF16E656FDB8D"
             "Feature" = "8:"
             }
         }
