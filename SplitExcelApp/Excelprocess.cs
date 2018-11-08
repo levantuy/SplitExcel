@@ -65,8 +65,29 @@ namespace SplitExcelApp
                     return;
                 }
 
+                int quarterCurrent = Convert.ToInt32(barEditQuarter.EditValue);
+                int quarterBefore = 0;
+                int quarterAfter = 0;
+                var year = Convert.ToDateTime(barEditYear.EditValue).Year;
+                string yearCurrent = year.ToString();
+                string yearBefore = yearCurrent;
+                string yearAfter = yearCurrent;
+
+                if (quarterCurrent == 1)
+                {
+                    quarterBefore = 4;
+                    yearBefore = (year - 1).ToString();
+                }
+                else quarterBefore = quarterCurrent - 1;
+
+                if (quarterCurrent == 4) {
+                    quarterAfter = 1;
+                    yearAfter = (year + 1).ToString();
+                }
+                else quarterAfter = quarterCurrent + 1;
+
                 var firstDateOfQuarter = DateOfQuarter(true);
-                var lastDateOfQuarter = DateOfQuarter(false);
+                var lastDateOfQuarter = DateOfQuarter(false);                
 
                 var workbook = spreadsheetControl.Document;
                 var worksheet = spreadsheetControl.Document.Worksheets.ActiveWorksheet;
@@ -80,9 +101,13 @@ namespace SplitExcelApp
                 dataTable.Columns.Add("Class");
                 dataTable.Columns.Add("Day");
                 dataTable.Columns.Add("Note");
+                dataTable.Columns.Add("C");
                 dataTable.Columns.Add("IsError");
                 dataTable.Columns.Add("DebitQ1");
                 dataTable.Columns.Add("DebitQ2");
+                dataTable.Columns.Add("I");
+                dataTable.Columns.Add("M");
+                dataTable.Columns.Add("ErrorMessage");
 
                 var dataErrors = new DataTable("DataError");
                 dataErrors.Columns.Add("Name");
@@ -93,6 +118,12 @@ namespace SplitExcelApp
                 dataErrors.Columns.Add("Class");
                 dataErrors.Columns.Add("Day");
                 dataErrors.Columns.Add("Note");
+                dataErrors.Columns.Add("C");
+                dataErrors.Columns.Add("IsError");
+                dataErrors.Columns.Add("DebitQ1");
+                dataErrors.Columns.Add("DebitQ2");
+                dataErrors.Columns.Add("I");
+                dataErrors.Columns.Add("M");
                 dataErrors.Columns.Add("ErrorMessage");
 
                 for (int i = 2; i <= usedRange.BottomRowIndex; i++)
@@ -103,12 +134,7 @@ namespace SplitExcelApp
                         {
                             var hpq2 = Convert.ToDouble(worksheet.Cells["K" + i.ToString()].Value.ToObject());
                             var hp = Convert.ToDouble(worksheet.Cells["M" + i.ToString()].Value.ToObject());
-                            var paymentDate = Convert.ToDateTime(worksheet.Cells["N" + i.ToString()].Value.ToObject());
-                            //if (paymentDate >= firstDateOfQuarter && paymentDate <= lastDateOfQuarter)
-                            //{
-
-                            //}
-                            // add table
+                            var paymentDate = Convert.ToDateTime(worksheet.Cells["N" + i.ToString()].Value.ToObject());                            
                             DataRow dataRow = dataTable.NewRow();
                             dataRow["Name"] = worksheet.Cells["F" + i.ToString()].Value;
                             dataRow["HPQ2"] = hpq2;
@@ -117,10 +143,13 @@ namespace SplitExcelApp
                             dataRow["HP"] = hp;
                             dataRow["Class"] = worksheet.Cells["G" + i.ToString()].Value;
                             dataRow["Day"] = worksheet.Cells["H" + i.ToString()].Value;
-                            dataRow["Note"] = worksheet.Cells["Q" + i.ToString()].Value.ToString() + " " + worksheet.Cells["Q" + i.ToString()].Value.ToString() + " " + worksheet.Cells["Q" + i.ToString()].Value.ToString();
+                            dataRow["Note"] = worksheet.Cells["Q" + i.ToString()].Value.ToString() + " " + worksheet.Cells["R" + i.ToString()].Value.ToString() + " " + worksheet.Cells["S" + i.ToString()].Value.ToString();
+                            dataRow["C"] = worksheet.Cells["C" + i.ToString()].Value.ToString();
                             dataRow["IsError"] = false;
                             dataRow["DebitQ1"] = worksheet.Cells["I" + i.ToString()].Value;
-                            dataRow["DebitQ2"] = worksheet.Cells["J" + i.ToString()].Value;                            
+                            dataRow["DebitQ2"] = worksheet.Cells["J" + i.ToString()].Value;
+                            dataRow["I"] = worksheet.Cells["T" + i.ToString()].Value;
+                            dataRow["M"] = worksheet.Cells["U" + i.ToString()].Value;
                             dataTable.Rows.Add(dataRow);
                         }
                         catch
@@ -133,39 +162,24 @@ namespace SplitExcelApp
                             dataRow["HP"] = worksheet.Cells["M" + i.ToString()].Value;
                             dataRow["Class"] = worksheet.Cells["G" + i.ToString()].Value;
                             dataRow["Day"] = worksheet.Cells["H" + i.ToString()].Value;
-                            dataRow["Note"] = worksheet.Cells["Q" + i.ToString()].Value.ToString() + " " + worksheet.Cells["Q" + i.ToString()].Value.ToString() + " " + worksheet.Cells["Q" + i.ToString()].Value.ToString();
+                            dataRow["Note"] = worksheet.Cells["Q" + i.ToString()].Value.ToString() + " " + worksheet.Cells["R" + i.ToString()].Value.ToString() + " " + worksheet.Cells["S" + i.ToString()].Value.ToString();
+                            dataRow["C"] = worksheet.Cells["C" + i.ToString()].Value.ToString();
                             dataRow["IsError"] = true;
                             dataRow["DebitQ1"] = worksheet.Cells["I" + i.ToString()].Value;
                             dataRow["DebitQ2"] = worksheet.Cells["J" + i.ToString()].Value;
+                            dataRow["I"] = worksheet.Cells["T" + i.ToString()].Value;
+                            dataRow["M"] = worksheet.Cells["U" + i.ToString()].Value;
                             dataTable.Rows.Add(dataRow);
                         }
                     }
                 }
 
                 spreadsheetControl.Document.LoadDocument(@"templates\temp.xlsx");
-                IWorkbook workbookNew = spreadsheetControl.Document;
-                //var sheetErrors = workbookNew.Worksheets.Add("Errors");
+                IWorkbook workbookNew = spreadsheetControl.Document;                
                 var sheetTotal = workbookNew.Worksheets["TỔNG"];
-                sheetTotal.Cells["A1"].Value = "DOANH THU QUÝ " + barEditQuarter.EditValue.ToString() + "/" + Convert.ToDateTime(barEditYear.EditValue).ToString("yyyy");
-                //workbook.Worksheets[sheetErrors.Name].CopyFrom(workbook.Worksheets["tempSheet"]);
-                //var errorCount = 5;
-                //foreach(DataRow row in dataErrors.Rows)
-                //{
-                //    errorCount++;
-                //    sheetErrors.Rows.Insert(errorCount);
-                //    sheetErrors.Rows[errorCount].CopyFrom(sheetErrors.Rows[errorCount + 1], PasteSpecial.All);
-                //    sheetErrors.Rows[errorCount][1].Value = (errorCount - 5).ToString();
-                //    sheetErrors.Rows[errorCount][2].Value = row["Name"].ToString();
-                //    sheetErrors.Rows[errorCount][3].Value = row["HP"].ToString();
-                //    sheetErrors.Rows[errorCount][4].Value = row["PaymentDate"].ToString();
-                //    sheetErrors.Rows[errorCount][5].Value = row["PaymentType"].ToString();
-                //    sheetErrors.Rows[errorCount][6].Value = row["HPQ2"].ToString();
-                //    sheetErrors.Cells["Q" + (errorCount + 1).ToString()].Value = row[7].ToString();
-                //    sheetErrors.Cells["R" + (errorCount + 1).ToString()].Value = row["ErrorMessage"].ToString();
-                //}
-
-                // filter by conditions
-                //var datafiltered = (from DataRow dRow in dataTable.Rows select dRow).Where(x => (DateTime)x["Day"] >= firstDateOfQuarter && Convert.ToDateTime(x["Day"]) <= lastDateOfQuarter);
+                sheetTotal.Cells["A1"].Value = "DOANH THU QUÝ " + quarterCurrent + "/" + yearCurrent;
+                sheetTotal.Cells["I3"].Value = "HP THỪA Q" + quarterCurrent.ToString() + " CHUYỂN Q." + quarterAfter.ToString() + "/" + yearAfter;
+                sheetTotal.Cells["J3"].Value = "HP Q." + quarterBefore.ToString() + "/" + yearBefore + " CHUYỂN Q." + quarterCurrent.ToString() + "/" + yearCurrent;
                 // sort data
                 var dataTableSort = (from DataRow dRow in dataTable.Rows select dRow).OrderBy(x => SplitFullName(x["Name"].ToString(), true)).ThenBy(x => SplitFullName(x["Name"].ToString(), false));
                 // get sheets
@@ -189,6 +203,14 @@ namespace SplitExcelApp
                         Convert.ToDateTime(barEditYear.EditValue).ToString("yyyy") + ":  TỪ " + firstDateOfQuarter.ToString("dd/MM/yyyy")
                         + " ĐẾN HẾT " + lastDateOfQuarter.ToString("dd/MM/yyyy");
                     workbook.Worksheets[sheet.Name].Cells["E2"].Value = title.ToUpper();
+                    workbook.Worksheets[sheet.Name].Cells["G4"].Value = "TÍNH HP THỰC QUÝ " + quarterCurrent + "/" + yearCurrent;
+                    workbook.Worksheets[sheet.Name].Cells["H5"].Value = "NỢ Q." + quarterBefore.ToString();                    
+                    workbook.Worksheets[sheet.Name].Cells["I5"].Value = "NỢ Q." + barEditQuarter.EditValue.ToString();
+                    workbook.Worksheets[sheet.Name].Cells["J5"].Value = "THỪA Q." + quarterBefore.ToString() +" CHUYỂN Q." + barEditQuarter.EditValue.ToString();
+                    workbook.Worksheets[sheet.Name].Cells["K5"].Value = "CÙNG TRONG Q." + barEditQuarter.EditValue.ToString();
+                    workbook.Worksheets[sheet.Name].Cells["M5"].Value = "THỪA Q." + barEditQuarter.EditValue.ToString() + "CHUYỂN Q." + quarterAfter.ToString()
+                        + "/" + ((DateTime)barEditYear.EditValue).ToString("yyyy");
+
                     var count = 5;
                     foreach (DataRow row in dataTableSort)
                     {
@@ -209,6 +231,9 @@ namespace SplitExcelApp
                             sheet.Cells["P" + (count + 1).ToString()].Value = row[7].ToString();
                             sheet.Rows[count]["H"].SetValue(ConvertToNumber(row["DebitQ1"]));
                             sheet.Rows[count]["J"].SetValue(ConvertToNumber(row["DebitQ2"]));
+                            sheet.Rows[count]["I"].SetValue(ConvertToNumber(row["I"]));
+                            sheet.Rows[count]["M"].SetValue(ConvertToNumber(row["M"]));
+                            sheet.Rows[count]["Q"].SetValue(ConvertToNumber(row["C"]));
                             if (Convert.ToBoolean(row["IsError"]))
                             {
                                 Range range = sheet.Rows[count].GetRangeWithAbsoluteReference();
@@ -238,6 +263,8 @@ namespace SplitExcelApp
                             + "+N" + strCount + "+O" + strCount + ")+(J" + strCount + "+K" + strCount + ")");
                         sheet.Cells["Q" + (count + 1).ToString()].Value = string.Empty;
                     }
+
+                    workbook.Worksheets[sheet.Name].Cells["E" + ].Value = title.ToUpper();
 
                     // write sheet total      
                     var usedTotal = sheetTotal.GetUsedRange();
@@ -281,7 +308,7 @@ namespace SplitExcelApp
                 saveFileDialog1.DefaultExt = "xlsx";
                 //saveFileDialog1.Filter = "Text files (*.xlsx)|*.xls|All files (*.*)|*.*";
                 saveFileDialog1.FilterIndex = 2;
-                saveFileDialog1.RestoreDirectory = true;
+                saveFileDialog1.RestoreDirectory = true;                
                 if (saveFileDialog1.ShowDialog() == DialogResult.OK)
                 {
                     workbookNew.SaveDocument(saveFileDialog1.FileName);
